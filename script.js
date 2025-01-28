@@ -9,16 +9,16 @@ function atualizarContador(processo) {
     alertasDiv.innerHTML += `<p>Processo detectado: ${processo}</p>`;
 }
 
-// Função para receber alertas do serviço
-async function receberAlertas() {
+// Função para obter alertas da API
+async function obterAlertas() {
     try {
-        const response = await fetch('https://seuusuario.github.io/MonitoradorWeb/alerta');
+        const response = await fetch('https://monitoradorweb-api.onrender.com/alertas');
         const data = await response.json();
-        atualizarContador(data.processo);
+        data.forEach(processo => atualizarContador(processo));
     } catch (error) {
-        console.error('Erro ao receber alertas:', error);
+        console.error('Erro ao obter alertas:', error);
     }
 }
 
 // Verificar alertas a cada 2 segundos
-setInterval(receberAlertas, 2000);
+setInterval(obterAlertas, 2000);
