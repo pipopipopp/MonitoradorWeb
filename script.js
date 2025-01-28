@@ -1,4 +1,3 @@
-// Variável para armazenar o contador de processos detectados
 let contador = 0;
 
 // Função para atualizar o contador e exibir alertas
@@ -6,16 +5,19 @@ function atualizarContador(processo) {
     contador++;
     document.getElementById('contador').textContent = contador;
 
-    // Exibir o alerta
     const alertasDiv = document.getElementById('alertas');
     alertasDiv.innerHTML += `<p>Processo detectado: ${processo}</p>`;
 }
 
-// Simular recebimento de alertas do serviço (para teste)
+// Função para receber alertas do serviço
 async function receberAlertas() {
-    const response = await fetch('http://127.0.0.1:5500/alerta');
-    const data = await response.json();
-    atualizarContador(data.processo);
+    try {
+        const response = await fetch('https://seuusuario.github.io/MonitoradorWeb/alerta');
+        const data = await response.json();
+        atualizarContador(data.processo);
+    } catch (error) {
+        console.error('Erro ao receber alertas:', error);
+    }
 }
 
 // Verificar alertas a cada 2 segundos
