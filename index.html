@@ -9,8 +9,24 @@
 <body>
     <div class="container">
         <h1>Monitorador de Processos</h1>
-        <p>Processos detectados: <span id="contador">0</span></p>
-        <div id="alertas"></div>
+        
+        <div class="secao">
+            <h2>Processos Abertos no Momento</h2>
+            <ul id="processosAbertos"></ul>
+        </div>
+
+        <div class="secao">
+            <h2>Processos Abertos na Última Semana</h2>
+            <table id="processosSemana">
+                <thead>
+                    <tr>
+                        <th>Processo</th>
+                        <th>Vezes Aberto</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
