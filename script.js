@@ -34,7 +34,14 @@ function atualizarInterface(data) {
     const processosAbertos = document.getElementById('processosAbertos');
     processosAbertos.innerHTML = data.abertosNoMomento.map(p => {
         const nomeProcesso = p.replace('.exe', ''); // Remove a extensão .exe
-        return `<li>${nomeProcesso} <button class="encerrar" onclick="solicitarEncerramento('${p}')">Encerrar (${10 - (contagemCliques[p] || 0)})</button></li>`;
+        const cliquesRestantes = 10 - (contagemCliques[p] || 0);
+        return `
+            <li>
+                ${nomeProcesso}
+                <span class="contador-cliques">${cliquesRestantes} cliques restantes</span>
+                <button class="encerrar" onclick="solicitarEncerramento('${p}')">Encerrar</button>
+            </li>
+        `;
     }).join('');
 
     // Atualiza a tabela de processos da semana

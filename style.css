@@ -90,6 +90,12 @@ button:disabled {
     margin-bottom: 10px;
 }
 
+.contador-cliques {
+    margin-left: 10px;
+    color: #69a6f9;
+    font-size: 0.9em;
+}
+
 /* Estilo para o botão de encerramento */
 button.encerrar {
     background-color: #dc3545; /* Vermelho */
