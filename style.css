@@ -24,16 +24,12 @@ ul {
     padding: 0;
 }
 
-/* Ajustes para a lista de processos abertos */
 ul li {
     background-color: #252525;
     margin: 5px 0;
     padding: 10px;
     border-radius: 4px;
     transition: background 0.3s;
-    display: flex;
-    align-items: center;
-    justify-content: space-between; /* Espaço entre texto e botão */
 }
 
 ul li:hover {
@@ -60,60 +56,4 @@ table th {
 
 tr:nth-child(even) {
     background-color: #2a2a2a;
-}
-
-/* Estilo para o botão de encerramento */
-button {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background 0.3s;
-    margin-left: 10px;
-}
-
-button:hover {
-    background-color: #0056b3;
-}
-
-button:disabled {
-    background-color: #6c757d;
-    cursor: not-allowed;
-}
-
-/* Estilo para o contador de reset */
-#contadorReset {
-    font-size: 0.9em;
-    color: #69a6f9;
-    margin-bottom: 10px;
-}
-
-.contador-cliques {
-    margin-left: 10px;
-    color: #69a6f9;
-    font-size: 0.9em;
-}
-
-/* Estilo para o botão de encerramento */
-button.encerrar {
-    background-color: #dc3545; /* Vermelho */
-    color: #fff;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background 0.3s;
-    margin-left: 10px;
-    flex-shrink: 0; /* Impede que o botão diminua */
-}
-
-button.encerrar:hover {
-    background-color: #c82333; /* Vermelho mais escuro */
-}
-
-button.encerrar:disabled {
-    background-color: #6c757d; /* Cinza quando desabilitado */
-    cursor: not-allowed;
 }
