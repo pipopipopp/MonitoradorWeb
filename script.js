@@ -38,8 +38,7 @@ function atualizarInterface(data) {
         return `
             <li>
                 ${nomeProcesso}
-                <span class="contador-cliques">${cliquesRestantes} cliques restantes</span>
-                <button class="encerrar" onclick="solicitarEncerramento('${p}')">Encerrar</button>
+                <button class="encerrar" onclick="solicitarEncerramento('${p}')">Encerrar (${cliquesRestantes})</button>
             </li>
         `;
     }).join('');

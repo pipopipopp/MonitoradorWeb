@@ -109,7 +109,6 @@ button.encerrar {
     flex-shrink: 0; /* Impede que o botão diminua */
 }
 
-
 button.encerrar:hover {
     background-color: #c82333; /* Vermelho mais escuro */
 }
