@@ -54,6 +54,7 @@ function atualizarInterface(data) {
         .join('');
 }
 
+
 let contagemCliques = {};
 
 async function solicitarEncerramento(processo) {
