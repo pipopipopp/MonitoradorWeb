@@ -14,48 +14,33 @@ async function carregarDados() {
     try {
         const response = await fetch('https://monitoradorweb-api.onrender.com/dados');
         const data = await response.json();
+
+        // Salva os dados no localStorage
         salvarDados(data);
+
+        // Atualiza a interface
         atualizarInterface(data);
     } catch (error) {
         console.error('Erro ao carregar dados:', error);
-        atualizarInterface(carregarDadosSalvos());
-    }
-}
 
-// Função para solicitar encerramento de processo
-async function solicitarEncerramento(processo) {
-    try {
-        const response = await fetch('https://monitoradorweb-api.onrender.com/solicitar-encerramento', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ processo })
-        });
-        const data = await response.json();
-        alert(`Faltam ${data.cliquesRestantes} cliques para encerrar ${processo}`);
-    } catch (error) {
-        console.error('Erro ao solicitar encerramento:', error);
+        // Carrega dados salvos localmente em caso de erro
+        const dadosSalvos = carregarDadosSalvos();
+        atualizarInterface(dadosSalvos);
     }
 }
 
 // Função para atualizar a interface
 function atualizarInterface(data) {
+    // Atualiza a lista de processos abertos
     const processosAbertos = document.getElementById('processosAbertos');
-    processosAbertos.innerHTML = data.abertosNoMomento.map(p => {
-        const processoNome = p.replace('.exe', '');
-        return `<li>${processoNome} <button onclick="solicitarEncerramento('${processoNome}')">Encerrar</button></li>`;
-    }).join('');
+    processosAbertos.innerHTML = data.abertosNoMomento.map(p => `<li>${p}</li>`).join('');
 
+    // Atualiza a tabela de processos da semana
     const processosSemana = document.getElementById('processosSemana').getElementsByTagName('tbody')[0];
     processosSemana.innerHTML = Object.entries(data.abertosNaSemana)
-        .map(([processo, contagem]) => `<tr><td>${processo.replace('.exe', '')}</td><td>${contagem}</td></tr>`)
+        .map(([processo, contagem]) => `<tr><td>${processo}</td><td>${contagem}</td></tr>`)
         .join('');
 }
-
-// Timer para resetar processos da última semana a cada 7 dias
-setInterval(() => {
-    localStorage.removeItem('dadosMonitorador');
-    carregarDados();
-}, 7 * 24 * 60 * 60 * 1000);
 
 // Carrega os dados a cada 2 segundos
 setInterval(carregarDados, 2000);
