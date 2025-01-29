@@ -33,7 +33,7 @@ ul li {
     transition: background 0.3s;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-between; /* Espaço entre texto e botão */
 }
 
 ul li:hover {
@@ -88,4 +88,26 @@ button:disabled {
     font-size: 0.9em;
     color: #69a6f9;
     margin-bottom: 10px;
+}
+
+/* Estilo para o botão de encerramento */
+button.encerrar {
+    background-color: #dc3545; /* Vermelho */
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-left: 10px;
+    flex-shrink: 0; /* Impede que o botão diminua */
+}
+
+button.encerrar:hover {
+    background-color: #c82333; /* Vermelho mais escuro */
+}
+
+button.encerrar:disabled {
+    background-color: #6c757d; /* Cinza quando desabilitado */
+    cursor: not-allowed;
 }

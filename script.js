@@ -34,7 +34,7 @@ function atualizarInterface(data) {
     const processosAbertos = document.getElementById('processosAbertos');
     processosAbertos.innerHTML = data.abertosNoMomento.map(p => {
         const nomeProcesso = p.replace('.exe', ''); // Remove a extensão .exe
-        return `<li>${nomeProcesso} <button onclick="solicitarEncerramento('${p}')">Encerrar</button></li>`;
+        return `<li>${nomeProcesso} <button class="encerrar" onclick="solicitarEncerramento('${p}')">Encerrar (${10 - (contagemCliques[p] || 0)})</button></li>`;
     }).join('');
 
     // Atualiza a tabela de processos da semana
@@ -56,6 +56,12 @@ async function solicitarEncerramento(processo) {
 
     contagemCliques[processo]++;
 
+    // Atualiza o texto do botão com os cliques restantes
+    const botao = document.querySelector(`button[onclick="solicitarEncerramento('${processo}')"]`);
+    if (botao) {
+        botao.textContent = `Encerrar (${10 - contagemCliques[processo]})`;
+    }
+
     if (contagemCliques[processo] >= 10) {
         try {
             const response = await fetch('https://monitoradorweb-api.onrender.com/encerrar', {
@@ -69,14 +75,13 @@ async function solicitarEncerramento(processo) {
             if (response.ok) {
                 alert(`Processo ${processo.replace('.exe', '')} será encerrado.`);
                 contagemCliques[processo] = 0; // Reseta o contador
+                carregarDados(); // Recarrega os dados para atualizar a interface
             } else {
                 alert('Erro ao solicitar encerramento do processo.');
             }
         } catch (error) {
             console.error('Erro ao solicitar encerramento:', error);
         }
-    } else {
-        alert(`Cliques restantes para encerrar: ${10 - contagemCliques[processo]}`);
     }
 }
 
