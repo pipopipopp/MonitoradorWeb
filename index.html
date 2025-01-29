@@ -10,22 +10,49 @@
     <div class="container">
         <h1>Monitorador de Processos</h1>
         
-        <div class="secao">
-            <h2>Processos Abertos no Momento</h2>
-            <ul id="processosAbertos"></ul>
+        <!-- Contador de Reset -->
+        <div class="contador-reset">
+            <p>Próximo reset em: <span id="contadorReset">7 dias</span></p>
         </div>
 
-        <div class="secao">
-            <h2>Processos Abertos na Última Semana</h2>
-            <table id="processosSemana">
-                <thead>
-                    <tr>
-                        <th>Processo</th>
-                        <th>Vezes Aberto</th>
-                    </tr>
-                </thead>
-                <tbody></tbody>
-            </table>
+        <!-- Seções lado a lado -->
+        <div class="secoes">
+            <!-- Abertos no Momento -->
+            <div class="secao">
+                <h2>Processos Abertos no Momento</h2>
+                <ul id="processosAbertos">
+                    <li class="processo">League of Legends</li>
+                    <li class="processo">osu!</li>
+                    <li class="processo">Roblox</li>
+                </ul>
+            </div>
+
+            <!-- Abertos na Semana -->
+            <div class="secao">
+                <h2>Processos Abertos na Última Semana</h2>
+                <table id="processosSemana">
+                    <thead>
+                        <tr>
+                            <th>Processo</th>
+                            <th>Vezes Aberto</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>League of Legends</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>osu!</td>
+                            <td>0</td>
+                        </tr>
+                        <tr>
+                            <td>Roblox</td>
+                            <td>0</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
     <script src="script.js"></script>
