@@ -29,8 +29,11 @@ async function carregarDados() {
     }
 }
 
+// Lista fixa de processos para exibir na tabela
+const processosFixos = ["League of Legends", "osu!", "notepad"];
+
 function atualizarInterface(data) {
-    // Atualiza a lista de processos abertos
+    // Atualiza a lista de processos abertos no momento
     const processosAbertos = document.getElementById('processosAbertos');
     processosAbertos.innerHTML = data.abertosNoMomento.map(p => {
         const nomeProcesso = p.replace('.exe', ''); // Remove a extensão .exe
@@ -45,12 +48,15 @@ function atualizarInterface(data) {
 
     // Atualiza a tabela de processos da semana
     const processosSemana = document.getElementById('processosSemana').getElementsByTagName('tbody')[0];
-    processosSemana.innerHTML = Object.entries(data.abertosNaSemana)
-        .map(([processo, contagem]) => {
-            const nomeProcesso = processo.replace('.exe', ''); // Remove a extensão .exe
-            return `<tr><td>${nomeProcesso}</td><td>${contagem}</td></tr>`;
-        })
-        .join('');
+    processosSemana.innerHTML = processosFixos.map(processo => {
+        const contagem = data.abertosNaSemana[processo] || 0; // Usa 0 se o processo não estiver no objeto
+        return `
+            <tr>
+                <td>${processo}</td>
+                <td>${contagem}</td>
+            </tr>
+        `;
+    }).join('');
 }
 
 
