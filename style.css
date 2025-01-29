@@ -24,12 +24,16 @@ ul {
     padding: 0;
 }
 
+/* Ajustes para a lista de processos abertos */
 ul li {
     background-color: #252525;
     margin: 5px 0;
     padding: 10px;
     border-radius: 4px;
     transition: background 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 ul li:hover {
@@ -56,4 +60,32 @@ table th {
 
 tr:nth-child(even) {
     background-color: #2a2a2a;
+}
+
+/* Estilo para o botão de encerramento */
+button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+    margin-left: 10px;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+button:disabled {
+    background-color: #6c757d;
+    cursor: not-allowed;
+}
+
+/* Estilo para o contador de reset */
+#contadorReset {
+    font-size: 0.9em;
+    color: #69a6f9;
+    margin-bottom: 10px;
 }
