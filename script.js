@@ -9,23 +9,52 @@ function carregarDadosSalvos() {
     return dados ? JSON.parse(dados) : { abertosNoMomento: [], abertosNaSemana: {} };
 }
 
-// Função para carregar dados da API
+// Função para carregar dados da API ou do cache
 async function carregarDados() {
-    try {
-        const response = await fetch('https://monitoradorweb-api.onrender.com/dados');
-        const data = await response.json();
+    const cacheKey = 'dadosMonitorador';
+    const cacheExpiry = 7 * 24 * 60 * 60 * 1000; // 7 dias
 
-        // Salva os dados no localStorage
-        salvarDados(data);
+    // Verifica se há dados no cache e se ainda são válidos
+    const cachedData = localStorage.getItem(cacheKey);
+    const cacheTimestamp = localStorage.getItem(`${cacheKey}_timestamp`);
+    const agora = new Date().getTime();
 
-        // Atualiza a interface
-        atualizarInterface(data);
-    } catch (error) {
-        console.error('Erro ao carregar dados:', error);
+    if (cachedData && cacheTimestamp && agora - cacheTimestamp < cacheExpiry) {
+        // Usa os dados do cache
+        const dados = JSON.parse(cachedData);
+        atualizarInterface(dados);
+    } else {
+        // Busca dados da API
+        try {
+            const response = await fetch('https://monitoradorweb-api.onrender.com/dados');
+            const data = await response.json();
 
-        // Carrega dados salvos localmente em caso de erro
-        const dadosSalvos = carregarDadosSalvos();
-        atualizarInterface(dadosSalvos);
+            // Atualiza o cache
+            localStorage.setItem(cacheKey, JSON.stringify(data));
+            localStorage.setItem(`${cacheKey}_timestamp`, agora);
+
+            // Atualiza a interface
+            atualizarInterface(data);
+        } catch (error) {
+            console.error('Erro ao carregar dados:', error);
+
+            // Tenta usar o cache mesmo que expirado
+            if (cachedData) {
+                const dados = JSON.parse(cachedData);
+                atualizarInterface(dados);
+            }
+        }
+    }
+}
+
+function limparLocalStorage() {
+    const agora = new Date().getTime();
+    const ultimaLimpeza = localStorage.getItem('ultimaLimpeza') || 0;
+
+    // Limpa o localStorage a cada 7 dias
+    if (agora - ultimaLimpeza > 7 * 24 * 60 * 60 * 1000) {
+        localStorage.removeItem('dadosMonitorador');
+        localStorage.setItem('ultimaLimpeza', agora);
     }
 }
 
@@ -53,7 +82,6 @@ function atualizarInterface(data) {
         .join('');
 }
 
-// Função para atualizar o contador de reset
 function atualizarContadorReset() {
     const agora = new Date();
     const proximoReset = new Date(agora);
@@ -71,6 +99,12 @@ function atualizarContadorReset() {
     }
 }
 
+// Atualiza o contador de reset a cada minuto
+setInterval(atualizarContadorReset, 60000);
+
+// Atualiza o contador ao carregar a página
+atualizarContadorReset();
+
 // Carrega os dados a cada 2 segundos
 setInterval(() => {
     fetch('https://monitoradorweb-api.onrender.com/dados')
@@ -84,9 +118,6 @@ setInterval(atualizarContadorReset, 60000);
 
 // Atualiza o contador ao carregar a página
 atualizarContadorReset();
-
-// Carrega os dados a cada 2 segundos
-setInterval(carregarDados, 2000);
 
 // Carrega os dados ao abrir a página
 carregarDados();
