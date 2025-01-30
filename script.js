@@ -1,84 +1,81 @@
-function salvarDados(data) {
-    localStorage.setItem('dadosMonitorador', JSON.stringify(data));
-}
-
-function carregarDadosSalvos() {
-    const dados = localStorage.getItem('dadosMonitorador');
-    return dados ? JSON.parse(dados) : { abertosNoMomento: [], abertosNaSemana: {} };
-}
-
-async function carregarDados() {
-    try {
-        const response = await fetch('http://localhost:3000/dados');
-        const data = await response.json();
-        atualizarInterface(data);
-    } catch (error) {
-        console.error('Erro ao carregar dados:', error);
-        alert('Erro ao carregar dados. Tente novamente mais tarde.');
+document.addEventListener("DOMContentLoaded", () => {
+    function salvarDados(data) {
+        localStorage.setItem('dadosMonitorador', JSON.stringify(data));
     }
-}
 
-function limparLocalStorage() {
-    const agora = new Date().getTime();
-    const ultimaLimpeza = localStorage.getItem('ultimaLimpeza') || 0;
-
-    if (agora - ultimaLimpeza > 7 * 24 * 60 * 60 * 1000) {
-        localStorage.removeItem('dadosMonitorador');
-        localStorage.setItem('ultimaLimpeza', agora);
+    function carregarDadosSalvos() {
+        const dados = localStorage.getItem('dadosMonitorador');
+        return dados ? JSON.parse(dados) : { abertosNoMomento: [], abertosNaSemana: {} };
     }
-}
 
-function atualizarInterface(data) {
-    const processosAbertos = document.getElementById('processosAbertos');
-    const processos = processosAbertos.querySelectorAll('.processo');
-
-    processos.forEach(processo => {
-        const nomeProcesso = processo.textContent.trim();
-        if (data.abertosNoMomento.includes(nomeProcesso)) {
-            processo.classList.remove('fechado');
-            processo.classList.add('aberto');
-        } else {
-            processo.classList.remove('aberto');
-            processo.classList.add('fechado');
+    async function carregarDados() {
+        try {
+            const response = await fetch('http://localhost:3000/dados');
+            if (!response.ok) throw new Error("API offline");
+            const data = await response.json();
+            atualizarInterface(data);
+            document.getElementById("conteudo").style.display = "block";
+            document.getElementById("statusOff").style.display = "none";
+        } catch (error) {
+            document.getElementById("conteudo").style.display = "none";
+            document.getElementById("statusOff").style.display = "flex";
         }
-    });
-
-    const processosSemana = document.getElementById('processosSemana').getElementsByTagName('tbody')[0];
-    processosSemana.innerHTML = Object.entries(data.abertosNaSemana)
-        .map(([processo, contagem]) => `<tr><td>${processo}</td><td>${contagem}</td></tr>`)
-        .join('');
-}
-
-function atualizarContadorReset() {
-    const agora = new Date();
-    const proximoReset = new Date(agora);
-    proximoReset.setDate(proximoReset.getDate() + (7 - proximoReset.getDay())); // proximo domingo
-    proximoReset.setHours(0, 0, 0, 0); // Meia noite
-
-    const diff = proximoReset - agora;
-    const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const horas = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutos = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-
-    const contador = document.getElementById('contadorReset');
-    if (contador) {
-        contador.textContent = `${dias}d ${horas}h ${minutos}m`;
     }
-}
 
-setInterval(atualizarContadorReset, 60000);
+    function atualizarInterface(data) {
+        const processosAbertos = document.getElementById('processosAbertos');
+        processosAbertos.innerHTML = "";
 
-atualizarContadorReset();
+        const processosPredefinidos = ["League of Legends", "osu!", "Roblox"];
+        
+        processosPredefinidos.forEach(processo => {
+            const li = document.createElement('li');
+            li.classList.add("processo");
+            
+            const status = document.createElement("span");
+            status.classList.add("status", data.abertosNoMomento.includes(processo) ? "verde" : "cinza");
+            
+            li.appendChild(status);
+            li.append(` ${processo}`);
+            processosAbertos.appendChild(li);
+        });
 
-setInterval(() => {
-    fetch('http://localhost:3000/dados')
-        .then(response => response.json())
-        .then(data => atualizarInterface(data))
-        .catch(error => console.error('Erro ao carregar dados:', error));
-}, 2000);
+        const processosSemana = document.getElementById('processosSemana').getElementsByTagName('tbody')[0];
+        processosSemana.innerHTML = Object.entries(data.abertosNaSemana)
+            .map(([processo, contagem]) => `<tr><td>${processo}</td><td>${contagem}</td></tr>`)
+            .join('');
+    }
 
-setInterval(atualizarContadorReset, 60000);
+    function atualizarContadorReset() {
+        const agora = new Date();
+        const proximoReset = new Date(agora);
+        proximoReset.setDate(proximoReset.getDate() + (7 - proximoReset.getDay())); // próximo domingo
+        proximoReset.setHours(0, 0, 0, 0);
 
-atualizarContadorReset();
+        const diff = proximoReset - agora;
+        const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const horas = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutos = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
 
-carregarDados();
+        const contador = document.getElementById('contadorReset');
+        if (contador) {
+            contador.textContent = `${dias}d ${horas}h ${minutos}m`;
+        }
+    }
+
+    setInterval(atualizarContadorReset, 60000);
+    atualizarContadorReset();
+
+    setInterval(carregarDados, 2000);
+    carregarDados();
+
+    // Ajustando posicionamento do título e legenda
+    const tituloSecao = document.querySelector(".secao h2");
+    const legenda = document.querySelector(".legenda");
+    if (tituloSecao && legenda) {
+        tituloSecao.style.display = "flex";
+        tituloSecao.style.alignItems = "center";
+        tituloSecao.style.justifyContent = "space-between";
+        tituloSecao.appendChild(legenda);
+    }
+});

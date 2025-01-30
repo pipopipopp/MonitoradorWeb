@@ -8,28 +8,31 @@
     <link rel="shortcut icon" href="disamis.png" type="image/x-icon">
 </head>
 <body>
-    <div class="container">
-        <h1>Monitorador de Processos</h1>
+    <div class="container" id="conteudo">
+        <h1>Monitorador Anti-League</h1>
         
         <div class="contador-reset">
-            <p>Próximo reset em: <span id="contadorReset">7 dias</span></p>
+            <p>Próximo reset semanal em: <span id="contadorReset">7 dias</span></p>
         </div>
 
         <div class="secoes">
-            
             <!-- Abertos no Momento -->
             <div class="secao">
-                <h2>Processos Abertos no Momento</h2>
+                <h2>Jogos Monitorados</h2>
                 <ul id="processosAbertos">
-                    <li class="processo">League of Legends</li>
-                    <li class="processo">osu!</li>
-                    <li class="processo">Roblox</li>
+                    <li class="processo"><span class="status verde"></span> League of Legends</li>
+                    <li class="processo"><span class="status verde"></span> osu!</li>
+                    <li class="processo"><span class="status verde"></span> Roblox</li>
                 </ul>
+                <div class="legenda">
+                    <span class="status verde"></span> Rodando
+                    <span class="status cinza"></span> Parado
+                </div>
             </div>
 
             <!-- Abertos na Semana -->
             <div class="secao">
-                <h2>Processos Abertos na Última Semana</h2>
+                <h3>Quantidade de vezes abertos nessa Semana <br/></h3>
                 <table id="processosSemana">
                     <thead>
                         <tr>
@@ -55,6 +58,11 @@
             </div>
         </div>
     </div>
+    
+    <div id="statusOff" class="oculto">
+        <h1>PC Desligado</h1>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
