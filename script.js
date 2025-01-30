@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     async function carregarDados() {
         try {
-            const response = await fetch('https://c99d-2804-30c-404c-4500-f8e0-5bb9-2fdd-7689.ngrok-free.app/dados'); // URL do ngrok
+            const response = await fetch('https://fa4b-2804-30c-404c-4500-f8e0-5bb9-2fdd-7689.ngrok-free.app/dados'); // URL do ngrok
             if (!response.ok) throw new Error("API offline");
             const data = await response.json();
             atualizarInterface(data);
