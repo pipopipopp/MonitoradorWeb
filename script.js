@@ -71,7 +71,7 @@ setInterval(atualizarContadorReset, 60000);
 atualizarContadorReset();
 
 setInterval(() => {
-    fetch('https://monitoradorweb-api.onrender.com/dados')
+    fetch('http://localhost:3000/dados')
         .then(response => response.json())
         .then(data => atualizarInterface(data))
         .catch(error => console.error('Erro ao carregar dados:', error));
