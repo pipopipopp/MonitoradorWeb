@@ -8,33 +8,13 @@ function carregarDadosSalvos() {
 }
 
 async function carregarDados() {
-    const cacheKey = 'dadosMonitorador';
-    const cacheExpiry = 7 * 24 * 60 * 60 * 1000; // 7 dias
-
-    const cachedData = localStorage.getItem(cacheKey);
-    const cacheTimestamp = localStorage.getItem(`${cacheKey}_timestamp`);
-    const agora = new Date().getTime();
-
-    if (cachedData && cacheTimestamp && agora - cacheTimestamp < cacheExpiry) {
-        const dados = JSON.parse(cachedData);
-        atualizarInterface(dados);
-    } else {
-        try {
-            const response = await fetch('https://monitoradorweb-api.onrender.com/dados');
-            const data = await response.json();
-
-            localStorage.setItem(cacheKey, JSON.stringify(data));
-            localStorage.setItem(`${cacheKey}_timestamp`, agora);
-
-            atualizarInterface(data);
-        } catch (error) {
-            console.error('Erro ao carregar dados:', error);
-
-            if (cachedData) {
-                const dados = JSON.parse(cachedData);
-                atualizarInterface(dados);
-            }
-        }
+    try {
+        const response = await fetch('http://localhost:3000/dados');
+        const data = await response.json();
+        atualizarInterface(data);
+    } catch (error) {
+        console.error('Erro ao carregar dados:', error);
+        alert('Erro ao carregar dados. Tente novamente mais tarde.');
     }
 }
 
