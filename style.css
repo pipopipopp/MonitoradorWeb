@@ -25,13 +25,14 @@ h1 {
     color: #69a6f9;
     text-align: center;
     margin-bottom: 20px;
+    font-size: 1.5em; /* Reduzido para telas menores */
 }
 
 /* Contador de Reset */
 .contador-reset {
     text-align: center;
     margin-bottom: 20px;
-    font-size: 1.1em;
+    font-size: 1em; /* Reduzido para telas menores */
     color: #69a6f9;
 }
 
@@ -44,6 +45,13 @@ h1 {
     display: flex;
     gap: 20px;
     justify-content: space-between;
+    flex-direction: column; /* Coloca as seções uma abaixo da outra em telas menores */
+}
+
+@media (min-width: 768px) {
+    .secoes {
+        flex-direction: row; /* Volta ao layout original em telas maiores */
+    }
 }
 
 .secao {
@@ -52,6 +60,7 @@ h1 {
     border-radius: 8px;
     flex: 1;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px; /* Adicionado espaçamento entre as seções */
 }
 
 .secao h2 {
@@ -103,4 +112,57 @@ h1 {
 
 #processosSemana tr:nth-child(even) {
     background-color: #3a3a3a;
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 1.2em;
+    }
+
+    .secao {
+        padding: 15px;
+    }
+
+    .secao h2 {
+        font-size: 1em;
+    }
+
+    #processosAbertos .processo {
+        padding: 10px;
+    }
+
+    #processosSemana th, #processosSemana td {
+        padding: 8px;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1em;
+    }
+
+    .contador-reset {
+        font-size: 0.9em;
+    }
+
+    .secao {
+        padding: 10px;
+    }
+
+    .secao h2 {
+        font-size: 0.9em;
+    }
+
+    #processosAbertos .processo {
+        padding: 8px;
+    }
+
+    #processosSemana th, #processosSemana td {
+        padding: 6px;
+    }
 }
